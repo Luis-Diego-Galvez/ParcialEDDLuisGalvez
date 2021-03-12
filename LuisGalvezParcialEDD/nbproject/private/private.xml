@@ -3,10 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/DataControllers/Categorias.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/Classes/Categoria.java</file>
             <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/DataControllers/Peliculas.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/Classes/Votos.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/DataControllers/CategoriasForm.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/DataControllers/VotosForm.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/ReviewMovie.java</file>
             <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/MainMenu.java</file>
-            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/VisualControls/DataControllers/Votos.java</file>
+            <file>file:/C:/Users/LuisD/Desktop/ParcialEDD/LuisGalvezParcialEDD/src/Classes/Pelicula.java</file>
         </group>
     </open-files>
 </project-private>

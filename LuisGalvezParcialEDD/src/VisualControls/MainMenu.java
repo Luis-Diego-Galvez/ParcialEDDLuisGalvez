@@ -5,6 +5,16 @@
  */
 package VisualControls;
 
+import Classes.Categoria;
+import Classes.Pelicula;
+import Classes.Votos;
+import VisualControls.DataControllers.CategoriasForm;
+import VisualControls.DataControllers.Peliculas;
+import java.util.ArrayList;
+import java.util.HashSet;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LuisD
@@ -16,8 +26,59 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
+        GenerarPeliculas();
+        ActualizarLista(cbbCategorias.getSelectedIndex());
     }
-
+    
+    public static ArrayList<Categoria> Categorias = new ArrayList<>();
+    public static int POSC, POSP;
+    DefaultListModel PeliculasPCat = new DefaultListModel();
+    
+    
+    private void GenerarPeliculas() {
+        Pelicula newPeli = new Pelicula();
+        String[] Terror = {"Viernes 13", "Pesadilla en la calle Elm", "IT"};
+        String[] Comedia = {"Scary Movie", "Mi abuelo es un peligro", "Policia y medio"};
+        String[] Accion = {"John Wick", "Terminator", "Kill Bill"};
+        String[] Romance = {"Titanic", "Yo antes de ti", "Bajo la misma estrella"};
+        Categorias.add(new Categoria("Terror"));
+        Categorias.add(new Categoria("Comedia"));
+        Categorias.add(new Categoria("Acción"));
+        Categorias.add(new Categoria("Romance"));
+        int POS = 0;
+        for (Categoria category : Categorias) {
+            for (int i = 0; i < 3; i++) {               
+                switch(POS) {
+                    case 0:
+                        newPeli = new Pelicula(Terror[i]);
+                        break;
+                    case 1:
+                        newPeli = new Pelicula(Comedia[i]);
+                        break;
+                    case 2:
+                        newPeli = new Pelicula(Accion[i]);
+                        break;
+                    case 3:
+                        newPeli = new Pelicula(Romance[i]);
+                        break;
+                }
+                for (int j = 0; j < 10; j++) {
+                    int newReview = (int) Math.round(Math.random()*9) + 1;
+                    newPeli.ActualizarVotos(new Votos(newReview, "Anónimo"));
+                }
+                category.ActualizarPeliculas(newPeli);
+            }
+            POS++;
+        }
+    }
+    private void ActualizarLista(int POS) {
+        lstPeliculas.removeAll();
+        PeliculasPCat.clear();
+        for (int i = 0; i < Categorias.get(POS).getPeliculas().size(); i++) {
+            PeliculasPCat.addElement(Categorias.get(POS).getPeliculas().get(i).getTitulo());
+        }
+        lstPeliculas.setModel(PeliculasPCat);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,13 +104,34 @@ public class MainMenu extends javax.swing.JFrame {
         cbbCategorias.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         cbbCategorias.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Terror", "Comedia", "Acciòn", "Romance" }));
         cbbCategorias.setSelectedIndex(2);
+        cbbCategorias.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbbCategoriasItemStateChanged(evt);
+            }
+        });
 
         btnAddCategory.setText("Agregar Categoria");
+        btnAddCategory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddCategoryActionPerformed(evt);
+            }
+        });
 
         lstPeliculas.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lstPeliculas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        lstPeliculas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lstPeliculasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(lstPeliculas);
 
         btnAddMovie.setText("Agregar Pelicula");
+        btnAddMovie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddMovieActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Categorias:");
@@ -100,6 +182,51 @@ public class MainMenu extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbbCategoriasItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbbCategoriasItemStateChanged
+        int POS = cbbCategorias.getSelectedIndex();
+        ActualizarLista(POS);
+    }//GEN-LAST:event_cbbCategoriasItemStateChanged
+
+    private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
+        CategoriasForm formCategoria = new CategoriasForm(this, true);
+        String pnombreCat = formCategoria.getCategory();
+        if (pnombreCat != "" && pnombreCat.length() > 0) {
+            Categorias.add(new Categoria(pnombreCat));
+            cbbCategorias.addItem(pnombreCat);
+            cbbCategorias.setSelectedIndex(cbbCategorias.getItemCount() - 1);
+        }       
+        ActualizarLista(cbbCategorias.getSelectedIndex());
+    }//GEN-LAST:event_btnAddCategoryActionPerformed
+
+    private void btnAddMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMovieActionPerformed
+        POSC = cbbCategorias.getSelectedIndex();
+        Peliculas formPelicula = new Peliculas(this, true);
+        String Dato = formPelicula.getPeliculaTitle();
+        int POS = formPelicula.getPOS();
+        try {
+            cbbCategorias.setSelectedIndex(POS);
+            if (Dato != "" && Dato.length() > 0) {
+                Categorias.get(POS).ActualizarPeliculas(new Pelicula(Dato));
+                for (int i = 0; i < 10; i++) {
+                    int Calif = (int) Math.round(Math.random() * 9) + 1;
+                    Categorias.get(POS).getPeliculas().get(Categorias.get(POS).getPeliculas().size()-1).ActualizarVotos(new Votos(Calif, "Anónimo"));
+                }
+            }
+            ActualizarLista(POS);
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se han encontrado los datos ingresados, pruebe ingresarlos nuevamente", "Datos no Encontrados", JOptionPane.ERROR_MESSAGE);
+            cbbCategorias.setSelectedIndex(2);
+        }
+    }//GEN-LAST:event_btnAddMovieActionPerformed
+
+    private void lstPeliculasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lstPeliculasMouseClicked
+        POSC = cbbCategorias.getSelectedIndex();
+        POSP = lstPeliculas.getSelectedIndex();
+        ReviewMovie revmov = new ReviewMovie();
+        revmov.setVisible(true);
+        ActualizarLista(POSC);
+    }//GEN-LAST:event_lstPeliculasMouseClicked
 
     /**
      * @param args the command line arguments

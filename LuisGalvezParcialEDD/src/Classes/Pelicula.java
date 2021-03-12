@@ -15,6 +15,7 @@ public class Pelicula {
     private String titulo;
     private ArrayList<Votos> Calificaciones = new ArrayList<>();
     
+    public Pelicula() {}
     public Pelicula(String ptitulo) {
         this.titulo = ptitulo;
     }

@@ -5,6 +5,11 @@
  */
 package VisualControls.DataControllers;
 
+import Classes.Categoria;
+import VisualControls.MainMenu;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author LuisD
@@ -17,8 +22,23 @@ public class Peliculas extends javax.swing.JDialog {
     public Peliculas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        for (Categoria category : Categories) {
+            cbbCategory.addItem(category.getCategoria());
+        }
+        cbbCategory.setSelectedIndex(Cat);    
     }
-
+    
+    ArrayList<Categoria> Categories = MainMenu.Categorias;
+    int Cat = MainMenu.POSC;
+    
+    public String getPeliculaTitle() {
+        setVisible(true);           
+        String Datos = txtTitle.getText();
+        return Datos;
+    }
+    public int getPOS() {
+        return Cat;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -58,9 +78,19 @@ public class Peliculas extends javax.swing.JDialog {
 
         btnCancel.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         btnCancel.setText("Cancelar");
+        btnCancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelActionPerformed(evt);
+            }
+        });
 
         btnAddMovie.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         btnAddMovie.setText("Agregar");
+        btnAddMovie.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddMovieActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,6 +141,23 @@ public class Peliculas extends javax.swing.JDialog {
     private void txtTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTitleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTitleActionPerformed
+
+    private void btnAddMovieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddMovieActionPerformed
+        Cat = cbbCategory.getSelectedIndex();
+        if (txtTitle.getText().length() > 0 && Cat >= 0) {
+            setVisible(false);
+            dispose();
+        }else {
+            JOptionPane.showMessageDialog(null,"Debe ingresar el titulo de la Pelicula y seleccionar su Categoría","Datos invalidos", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAddMovieActionPerformed
+
+    private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
+        txtTitle.setText("");
+        Cat = cbbCategory.getSelectedIndex();
+        setVisible(false);
+        dispose();
+    }//GEN-LAST:event_btnCancelActionPerformed
 
     /**
      * @param args the command line arguments
